@@ -1,0 +1,25 @@
+- hosts: localhost
+  connection: local
+  vars:
+    bucketname: "{{b_name}}"
+    access_key: "{{a_key}}"
+    secret_key: "{{s_key}}"
+    filename: "{{f_name}}"
+    mode1: "{{mode2}}" 
+  tasks:
+   - pip:
+       name: "botocore"
+   - pip:
+       name: "boto3"
+
+   - name: uploading,downloading or delete
+     aws_s3:
+       bucket: "{{bucketname}}"
+       aws_access_key: "{{access_key}}"
+       aws_secret_key: "{{secret_key}}"
+       object: "{{filename}}"
+       mode: "{{mode1}}"
+  environment:
+     - PYTHONPATH: "/usr/local/lib/python3.6/site-packages"
+
+

@@ -1,0 +1,11 @@
+- hosts: all
+  vars:
+    g: "{{groupname}}"
+  tasks:
+    - name: create group
+      group:
+        # gid: 7699
+         name: "{{g}}"
+         state: present
+     # become: yes
+     # become_method: "sudo"  

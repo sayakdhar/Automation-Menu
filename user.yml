@@ -1,0 +1,13 @@
+- hosts: localhost
+  vars:
+    uname: "{{user_name}}"
+    #prompt: "enter user name:"
+  tasks:
+    - name: Add the user 'johnd' with a specific uid and a primary group of 'admin'
+      user:
+         name: "{{uname}}"
+         comment: Vipul pareta
+        # uid: 1000
+        # group: admin
+      #become: yes
+      #become_method: "sudo"

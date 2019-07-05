@@ -1,0 +1,33 @@
+- hosts: localhost
+
+  vars:
+    access_key: "{{a_key}}"
+    secret_key: "{{s_key}}"
+ # vars_prompt:
+ #   - name: access_key
+ #     prompt: "Enter access key "
+ #     private: no
+ #   - name: secret_key
+ #     prompt: "Enter secret key"
+ #     private: no
+    #- name: sec_group
+     # prompt: "Enter Security Group"
+     # private: no
+  tasks:
+    - pip:
+        name: boto
+        state: present
+    - ec2:
+        image: "ami-5b673c34"
+        #key_name: "sshkey"
+        state: present
+        wait: True
+       # group: "{{sec_group}}"
+        aws_access_key: "{{access_key}}"
+        aws_secret_key: "{{secret_key}}"
+        region: "ap-south-1"
+        instance_type: "t2.micro"
+        vpc_subnet_id: "subnet-3f39bb73"
+        assign_public_ip: yes
+  environment:
+     - PYTHONPATH: "/usr/local/lib/python3.6/site-packages"

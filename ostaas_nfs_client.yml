@@ -1,0 +1,18 @@
+- hosts: localhost
+  tasks:
+#  - selinux:
+#     state: permissive
+#     policy: targeted
+#  - iptables:
+#     flush: yes
+  - file:
+     path: "/media/mydrive"
+     state: directory
+  - mount:
+     fstype: nfs
+     src: "{{ansible_default_ipv4.address}}:/cloud/lw"
+     path: /media/mydrive
+     state: mounted
+    
+    
+ 

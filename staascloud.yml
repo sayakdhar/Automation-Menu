@@ -1,0 +1,12 @@
+- hosts: localhost
+  tasks:
+   - parted:
+        device: "/dev/sdb"
+        number: 1
+        state: "present"
+   - lvg:
+        vg: guru
+        pvs: "/dev/sdb1"
+        pesize: 16
+   
+

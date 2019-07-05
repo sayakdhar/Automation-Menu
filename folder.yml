@@ -1,0 +1,8 @@
+- hosts: localhost
+  vars:
+    path1: "{{path2}}"
+  tasks: 
+    - file:
+         path: "{{path1}}"
+         state: directory
+

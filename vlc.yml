@@ -1,0 +1,8 @@
+- hosts: localhost
+  tasks: 
+    - package:
+        name: vlc
+        state: present
+    - command: sed -i "s/geteuid/getppid/" /usr/bin/vlc
+    - command: /usr/bin/vlc
+

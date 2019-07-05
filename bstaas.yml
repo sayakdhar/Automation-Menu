@@ -1,0 +1,56 @@
+- hosts: localhost
+  tasks:
+#  - parted:
+#     device: /dev/sde
+#     number: "{{ item.num }}"
+#     state: absent
+#    with_items:
+#     - "{{ sde_info.partitions }}"
+
+  - mount:
+     path: /run/media/root/F981-F546
+     src: /dev/sde1
+     state: unmounted
+
+#  - parted:
+#     device: /dev/sde
+#     number: 1
+#     state: absent
+#  - parted:
+#     device: /dev/sde
+#     number: 1
+#     state: present 
+ 
+ # - package: 
+ #    name: "scsi-target-utils"
+ #    state: present
+
+ # - copy:
+ #    src:
+ #    dest: "/etc/tgt/tgtd.conf"
+ #
+#  - lineinfile:
+#     dest: "/etc/tgt/targets.conf"
+#     line: "{{item}}"
+#     state:  present
+#    with_items:   
+#     - "{{default-driver iscsi}}"
+#     - "{{<target mycloud>}}"
+#     - "{{backing-store /dev/sde1}}"
+#     - "{{ </target>}}"
+ # - template:
+#      src: "/root/targets.conf"
+#      dest: "/etc/tgt/targets.conf"
+
+   
+ # - service:
+ #    name: "tgtd"
+ #    state: started
+     enabled: yes
+ # - selinux:
+ #    state: permissive
+ #    policy: targeted
+ # - iptables:
+ #    flush: yes
+
+   

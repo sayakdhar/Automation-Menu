@@ -1,0 +1,23 @@
+- hosts: client
+  tasks:
+  - name: "Copying the MAPRED configuration file"
+    copy:
+        src: "/code2/automate/mapred-site.xml"
+        dest: "/etc/hadoop/mapred-site.xml"
+  - name: "Copying the Core configuration file"
+    copy:
+        src: "/code2/automate/core-site.xml"
+        dest: "/etc/hadoop/core-site.xml"
+  - name: "Configuring the MAPRED file"
+    lineinfile:
+        path: /etc/hadoop/mapred-site.xml
+        regexp: '^<value>ip</value>'
+        line: "<value>{{ groups['job'][0] }}:9002</value>"
+  - name: "Configuring the CORE file"
+    lineinfile:
+        path: /etc/hadoop/core-site.xml
+        regexp: '^<value>ip</value>'
+        line: "<value>hdfs://{{ groups['name'][0] }}:9001</value>"
+  - name: "Uploading file and analysing it"
+    command: "hadoop jar /usr/share/hadoop/hadoop-examples-1.2.1.jar  wordcount /file.txt  /output"
+

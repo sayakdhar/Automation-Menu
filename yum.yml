@@ -1,0 +1,29 @@
+- hosts: all
+  tasks:
+    - copy:
+        src: /root/rhel7_5_rpm_extras
+        dest: /root
+    - copy:
+        src: /root/rhel7_extra_new_rpm
+        dest: /root
+    - name: creating repos
+      yum_repository:
+        name: dvd
+        description: dvd yum repo
+        file: dvd
+        baseurl: file:///run/media/root/RHEL-7.5\ Server.x86_64
+        gpgcheck: no
+    - name: rpm_extra
+      yum_repository:
+        name: rpm_extra
+        file: rpm_extra
+        description: rpm1
+        baseurl: file:///root/rhel7_5_rpm_extras
+        gpgcheck: no
+    - name: rpm_extra_new
+      yum_repository:
+        name: rpm_new
+        description: rpm2
+        file: rpm_new
+        baseurl: file:///root/rhel7_extra_new_rpm
+        gpgcheck: no

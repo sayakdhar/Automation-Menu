@@ -1,0 +1,48 @@
+- hosts: localhost
+#  vars_prompt:
+#  - name: user_name
+#    prompt: "Enter your name"
+#    private: false
+#  - name: lv_size
+#    prompt: "How much storage do you need ?"
+#    private: false
+  vars:
+    user_name: "{{user_name}}"
+    lv_size: "{{lv_size}}"
+
+  tasks:
+  - lvol:
+     vg: vgcloud
+     lv: "{{user_name}}"
+     size: "{{lv_size}}"
+#  - filesystem:
+#     fstype: ext4
+#     dev: /dev/vgcloud/{{user_name}}
+#  - file:
+#     path: "/cloud/{{user_name}}"
+#     state: directory
+#     mode: 777
+#     owner: root
+#     group: root
+#  - mount:
+#     path: /cloud/{{user_name}}
+#     src: /dev/vgcloud/{{user_name}}
+#     fstype: ext4
+#     state: mounted
+#  - lineinfile:
+#     path: "/etc/exports"
+#     line: "/cloud/{{user_name}}  *(rw,no_root_squash)"
+#     state: present
+#  - service:
+#     name: "nfs"
+#     state: "started"
+#     enabled: yes
+#  - selinux:
+#     state: permissive
+#     policy: targeted
+#  - iptables:
+#    flush: yes
+#  - command: "exportfs -v"
+#  - command: "exportfs -a" 
+ 
+    

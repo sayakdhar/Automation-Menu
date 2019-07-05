@@ -1,0 +1,14 @@
+- hosts: localhost
+  vars:
+    path: "{{path1}}"
+    part_num: "{{part_num1}}"
+    state1: "{{state2}}"
+    size1: "{{size2}}"
+    
+  tasks:
+   - parted:
+         device: "{{path}}"
+         number: "{{part_num}}"
+         state: "{{state1}}"
+         part_end: "{{size1}}"
+

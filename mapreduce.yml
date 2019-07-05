@@ -1,0 +1,123 @@
+---
+- hosts: all
+  tasks:
+  - name: Check the hadoop software
+    command: "rpm -q hadoop"
+    register: hq
+
+  - name: Check the java version
+    command: "java -version"
+    register: jq
+ 
+ # - name: Sending the JDK Software
+ #   copy:
+ #       src: /media/sf_share/Software/jdk-8u171-linux-x64.rpm
+ #       dest: /root/Desktop/
+ #   when: "'Java HotSpot' not in jq.stdout"
+  
+#  - name: Sending the Hadoop Software
+#    copy:
+#        src: /media/sf_share/Software/hadoop-1.2.1-1.x86_64.rpm
+#        dest: /root/Desktop/
+#    when: "'not installed' in hq.stdout"
+
+#  - name: "Installing JDK "
+#    package:
+#        name: /root/Desktop/jdk-8u171-linux-x64.rpm
+#        state: "installed"
+#    register: x
+#    ignore_errors: true
+#    when: "'Java HotSpot' not in jq.stdout"
+
+#  - get_url:
+#        dest: /root/jdk.rpm
+#        url: #Write the url here
+#    when: "'No package' in x.results[0] "
+#    ignore_errors: True
+
+#  - name: "Installing Hadoop "
+#    command: "rpm -ivh /root/Desktop/hadoop-1.2.1-1.x86_64.rpm  --force"
+#    when: "'not installed' not in hq.stdout"
+
+#  - name: " Setting the path of Oracle JAVA"
+#    command: "{{ item }}"
+#    with_items:
+#        - "export JAVA_HOME=/usr/java/jdk1.8.0_171-amd64"
+#        - "export PATH=/usr/java/jdk1.8.0_171-amd64/bin/:$PATH"
+#    ignore_errors: True
+#    when: "'Java HotSpot' not in jq.stdout"
+
+#  - name: "Setting the path of JAVA permanent"
+#    shell: "{{ item }}"
+#    with_items:
+#        - "echo 'export JAVA_HOME=/usr/java/jdk1.8.0_171-amd64' >> /root/.bashrc"
+#        - "echo 'PATH=/usr/java/jdk1.8.0_171-amd64/bin/:$PATH' >> /root/.bashrc"
+#    when: "'Java HotSpot' not in jq.stdout"
+ 
+
+- hosts: job
+  tasks:
+  - name: "Copying the MAPRED configuration file"
+    copy:
+        src: "/code2/automate/mapred-site.xml"
+        dest: "/etc/hadoop/mapred-site.xml"
+  - name: "Copying the Core configuration file"
+    copy:
+        src: "/code2/automate/core-site.xml"
+        dest: "/etc/hadoop/core-site.xml"
+  - name: "Configuring the MAPRED file"
+    lineinfile:
+        path: /etc/hadoop/mapred-site.xml
+        regexp: '^<value>ip</value>'
+        line: "<value>{{ groups['job'][0] }}:9002</value>"
+  - name: "Configuring the CORE file"
+    lineinfile:
+        path: /etc/hadoop/core-site.xml
+        regexp: '^<value>ip</value>'
+        line: "<value>hdfs://{{ groups['name'][0] }}:9001</value>"
+
+  - name: " Start Hadoop Services"
+    command: "hadoop-daemon.sh start jobtracker"
+
+  - name: "Starting the Firewall Services"
+    service:
+        name: "firewalld"
+        state: "restarted"
+
+  - name: "Firewall Rule"
+    firewalld:
+        port: "9001-9002/tcp"
+        immediate: true
+        permanent: true
+        state: "enabled"
+
+
+- hosts: task
+  tasks:
+  - name: "Copying the MAPRED configuration file"
+    copy:
+        src: "/code2/automate/mapred-site.xml"
+        dest: "/etc/hadoop/mapred-site.xml"
+  - name: "Configuring the MAPRED file"
+    lineinfile:
+        path: /etc/hadoop/mapred-site.xml
+        regexp: '^<value>ip</value>'
+        line: "<value>{{ groups['job'][0] }}:9002</value>"
+
+  - name: " Start Hadoop Services"
+    command: "hadoop-daemon.sh start tasktracker"
+
+  - name: "Starting the Firewall Services"
+    service:
+        name: "firewalld"
+        state: "restarted"
+
+  - name: "Firewall Rule"
+    firewalld:
+        port: "9001-9002/tcp"
+        immediate: true
+        permanent: true
+        state: "enabled"
+
+
+

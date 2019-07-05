@@ -1,0 +1,22 @@
+- hosts: localhost
+  #vars_files:
+   # - emailpass.yml
+  tasks: 
+        - name: Copying Pic to host
+          copy: 
+            src: "/root/USBClick.png"
+            dest: "/root/USBClick.png"
+        - name: Sending an e-mail using Gmail SMTP servers
+          mail:
+            host: smtp.gmail.com
+            port: 587
+            username: "chgoyal.prt@gmail.com"
+            password: "" 
+            to:
+              - "shivamshekhar.i7@gmail.com"
+              - "nishitrao1011@gmail.com"
+            attach:
+              - /root/USBClick.png
+            subject: "Alert"
+            body: "Someone tried to hack you !!"
+  

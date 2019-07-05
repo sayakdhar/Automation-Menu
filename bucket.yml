@@ -1,0 +1,15 @@
+- hosts: localhost
+  #connection: local
+  vars:
+     a_key: "{{access_key}}"
+     s_key: "{{secret_key}}"
+     bucket_name: "{{bucketname}}"
+  tasks:
+    - aws_s3:
+       bucket: "{{bucket_name}}"
+       mode: create
+       permission: public-read
+       region: "ap-south-1"
+       aws_access_key: "{{a_key}}" 
+       aws_secret_key: "{{s_key}}"
+       

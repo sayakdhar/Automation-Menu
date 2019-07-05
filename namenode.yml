@@ -1,0 +1,87 @@
+- hosts: dn
+  vars:
+    service_state: "{{state}}"
+  tasks:
+   - copy:
+      src: "/root/project/files/hadoop-1.2.1-1.x86_64.rpm"
+      dest: "/root/"
+  
+   - command: "rpm -ivh  /root/hadoop-1.2.1-1.x86_64.rpm  --force"
+
+   - template:
+      src: "/root/project/files/datanode.xml"
+      dest: "/etc/hadoop/hdfs-site.xml"
+   
+   - template:
+      src: "/root/project/files/core-site.xml"
+      dest: "/etc/hadoop/core-site.xml"
+  
+   - command: "hadoop-daemon.sh  {{service_state}}  datanode"         
+
+
+
+- hosts: hclient
+  tasks:
+   - copy:
+      src: "/root/project/files/hadoop-1.2.1-1.x86_64.rpm"
+      dest: "/root/"
+
+   - command: "rpm -ivh  /root/hadoop-1.2.1-1.x86_64.rpm  --force"
+
+   - template:
+      src: "/root/project/files/core-site.xml"
+      dest: "/etc/hadoop/core-site.xml"
+
+- hosts: jt
+  tasks:
+   - copy:
+      src: "/root/project/files/hadoop-1.2.1-1.x86_64.rpm"
+      dest: "/root/"
+
+   - command: "rpm -ivh  /root/hadoop-1.2.1-1.x86_64.rpm  --force"
+
+   - template:
+      src: "/root/project/files/jobtracker.xml"
+      dest: "/etc/hadoop/mapred-site.xml"
+
+   - template:
+      src: "/root/project/files/core-site.xml"
+      dest: "/etc/hadoop/core-site.xml"
+
+   - command: "hadoop-daemon.sh  start  jobtracker"
+
+                                
+- hosts: tt
+  tasks:
+   - copy:
+      src: "/root/project/files/hadoop-1.2.1-1.x86_64.rpm"
+      dest: "/root/"
+
+   - command: "rpm -ivh  /root/hadoop-1.2.1-1.x86_64.rpm  --force"
+
+   - template:
+      src: "/root/project/files/jobtracker.xml"
+      dest: "/etc/hadoop/mapred-site.xml"
+
+   - command: "hadoop-daemon.sh  start  tasktracker"
+
+- hosts: mrclient
+  tasks:
+   - copy:
+      src: "/root/project/files/hadoop-1.2.1-1.x86_64.rpm"
+      dest: "/root/"
+
+   - command: "rpm -ivh  /root/hadoop-1.2.1-1.x86_64.rpm  --force"
+
+   - template:
+      src: "/root/project/files/jobtracker.xml"
+      dest: "/etc/hadoop/mapred-site.xml"
+
+   - template:
+      src: "/root/project/files/core-site.xml"
+      dest: "/etc/hadoop/core-site.xml"
+
+
+                            
+
+

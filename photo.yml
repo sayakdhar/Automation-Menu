@@ -1,0 +1,7 @@
+- hosts: localhost
+  tasks:
+    - copy:
+        src: /root/Desktop/python_folder/photo.py
+        dest: /root/
+
+    - command: python36 photo.py

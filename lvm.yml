@@ -1,0 +1,50 @@
+- hosts: localhost
+  vars:
+    - device1: "{{device_name}}"
+      state1: "{{state2}}"
+      number1: "{{number2}}"
+      size: "{{size2}}" 
+      vgname: "{{vgname2}}"
+      pv: "{{pvlocation}}"
+      pesize1: "{{pesize2}}"
+      lvname: "{{lvname2}}"
+      lvsize: "{{lvsize2}}"
+      fstype1: "{{fstype2}}"
+      fsloc1: "{{fsloc2}}"
+      mount_path1: "{{mount_path2}}"
+      mount_dest1: "{{mount_dest2}}"
+      fstype1: "{{fstype2}}"
+      mount_state1: "{{mount_state2}}"
+  tasks:
+    - parted:
+         device: "{{device1}}"
+         number: "{{number1}}"
+         state: "{{state1}}"
+         part_end: "{{size}}"
+   - name: Create a volume group
+     lvg:
+         vg: "{{vgname}}"
+         pvs: "{{pv}}"
+         pesize: "{{pesize1}}"
+   - name: Create a logical volume 
+     lvol:
+         vg: "{{vgname}}"
+         lv: "{{lvname}}"
+         size: "{{lvsize}}"
+   - name: Create a ext4 filesystem
+     filesystem:
+         fstype: "{{fstype1}}"
+         dev: "{{fsloc1}}"
+
+   - name: Mount up device by label
+     mount:
+         path: "{{mount_path1}}"
+         src: "{{mount_dest1}}"
+         fstype: "{{fstype1}}"
+         state: "{{mount_state1}}"
+
+
+
+
+   
+

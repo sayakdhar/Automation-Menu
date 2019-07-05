@@ -1,0 +1,28 @@
+- hosts: localhost
+  vars_prompt:
+  - name: container
+    prompt: "enter container name to start"
+    private: false
+  tasks:
+  - name: install docker
+    pip:
+     name: docker-py
+  - name: start docker service
+    service:
+     name: docker
+     state: started
+  - name: Load image from archive
+    docker_image:
+     name: centos
+     tag: latest
+     load_path: /media/sf_New_folder/rhel7_5_software_extras/centos-latest.tar
+     state: present
+#  - name: launch/run the docker container
+#    docker_container:
+#     name: "{{container}}"                
+#     image: firefox:v1
+#     interactive: true      
+  - command: "docker run -dit --name {{container}} firefox:v1"
+    register: x
+ # - debug: 
+ #    var: x 

@@ -1,0 +1,18 @@
+- hosts: localhost
+  vars:
+    username1: "{{user_name}}"
+    TO: "{{Receiver}}"
+    password1: "{{passwrd}}"
+    sub_ject: "{{sub}}"
+    msg: "{{message}}"
+  tasks:
+      - name: Sending an e-mail using Gmail SMTP servers
+        mail:
+           host: smtp.gmail.com
+           port: 587
+           username: "{{username1}}"
+           password: "{{password1}}"
+           to: "{{TO}}"
+           subject: "{{sub_ject}}"
+           body: "{{msg}}"
+

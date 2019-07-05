@@ -1,0 +1,21 @@
+- hosts: localhost
+  tasks:
+     - package:
+         name: docker-ce
+         state: present
+     - service:
+         name: docker
+         state: started
+ #    - pip:
+ #        name: docker-py
+ #        state: present
+     - docker_container:
+         name: vipul
+         image: "shellinabox:v1"
+         state: started
+         interactive: false
+         tty: true
+         ipc_mode: host
+#         published_ports: 2222:4200
+         ports:
+          - 2222:4200

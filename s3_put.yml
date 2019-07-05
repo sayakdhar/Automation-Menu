@@ -1,0 +1,33 @@
+- hosts: localhost
+  connection: local
+  vars_prompt:
+   - name: access_key
+     prompt: "Enter your access key"
+     private: no
+   - name: secret_key
+     prompt: "Enter your secret key"
+   - name: bucketname
+     prompt: "Enter your bucket name"
+     private: no
+   - name: filename
+     prompt: "Enter the file name to upload"
+     private: no
+
+  tasks:
+   - pip:
+       name: "botocore"
+   - pip:
+       name: "boto3"
+   - name: uploading a file
+     aws_s3:
+       bucket: "{{bucketname}}"
+       aws_access_key: "{{access_key}}"
+       aws_secret_key: "{{secret_key}}"
+
+       object: "/root/Desktop/myansiblecode/{{filename}}"
+       src: "/root/Desktop/{{filename}}"
+       mode: put
+  environment:
+     - PYTHONPATH: "/usr/local/lib/python3.6/site-packages"
+
+

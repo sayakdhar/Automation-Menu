@@ -1,0 +1,25 @@
+- hosts: all
+  vars:
+    dockername: "{{name}}"
+  tasks:
+    - package:
+        name: "docker-ce"
+        state: present
+    - service:
+        name: "docker"
+        state: restarted
+        enabled: True
+    - pip:
+        name: "docker-py"
+    - docker_container:
+        name: "{{dockername}}"
+        restart: yes
+        image: "centos"
+        state: started
+        tty: True
+        interactive: True
+        volumes: 
+           - "/run/media/root/RHEL-7.5\ Server.x86_64"
+      environment:
+         - PYTHONPATH: /usr/local/lib/python3.6/site-packages   
+        

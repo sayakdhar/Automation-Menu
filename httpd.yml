@@ -1,0 +1,31 @@
+- hosts: all
+  tasks:
+        - package:
+                 name: "httpd"
+                 state: present
+         # become: yes
+         # become_method: "sudo"
+
+        - copy:
+                dest: "/var/www/html"
+                src: "/var/www/html/index.html"
+         # become: yes
+         # become_method: "sudo"
+
+        - service:
+                name: "httpd"
+                state: started
+                enabled: yes
+               # name: "firewalld"
+               # state: started
+
+          #become: yes
+          #become_method: "sudo"
+
+       # - firewalld:
+       #         port: 80/tcp
+       #         permanent: true
+       #         state: enabled
+       #         immediate: yes
+         # become: yes
+         # become_method: "sudo"                     
